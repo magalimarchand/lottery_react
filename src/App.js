@@ -4,7 +4,7 @@ import './App.css';
 import web3 from './web3';
 import lottery from './lottery';
 
-//start application on localhost:3001
+//start application: $ npm start (and url localhost:3001)
 
 class App extends Component {
 
@@ -32,7 +32,7 @@ class App extends Component {
     this.setState({ manager, players, balance });
   }
 
-  //Methode de la classe qui gere son propre this (arrow function)
+  //Methode qui gere son propre this (arrow function), permet d'enregistrer un joueur
   onSubmit = async (event)=>{ //event represente la submission du form
 
     event.preventDefault(); //empeche le form de se submit lui-meme
@@ -51,6 +51,27 @@ class App extends Component {
     //envoi front-end d'un message  de succes pour l'utilisateur
     this.setState({ message: 'You have been entered!'});
 
+  };
+
+  //Methode qui permet de choisir un gagnant
+  onClick = async (event)=>{
+
+    event.preventDefault(); //empeche le form de se submit lui-meme
+
+    const accounts = await web3.eth.getAccounts();
+
+    this.setState({ message: 'Waiting on transaction success...'});
+
+    //when we send a transaction, we get no return value back (never):
+    //So how to know who is the winner???
+    await lottery.methods.pickWinner().send({
+      from:accounts[0]
+    });
+
+    //perso: display winner id
+    let winner = await lottery.methods.pickWinner().lastWinner;
+    console.log(winner);
+    this.setState({ message: 'A winner has been picked!'});
   };
 
   render() {
@@ -82,8 +103,14 @@ class App extends Component {
        </form>
 
        <hr/>
-       <h1>{this.state.message}</h1>
 
+       <h4>Ready to pick a winner?</h4>
+       <button onClick={this.onClick}>Pick a winner!</button>
+
+       <hr/>
+
+       <h1>{this.state.message}</h1>
+ 
      </div>
     );
   }
