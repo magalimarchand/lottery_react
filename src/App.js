@@ -68,9 +68,6 @@ class App extends Component {
       from:accounts[0]
     });
 
-    //perso: display winner id
-    let winner = await lottery.methods.pickWinner().lastWinner;
-    console.log(winner);
     this.setState({ message: 'A winner has been picked!'});
   };
 
