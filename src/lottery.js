@@ -1,7 +1,7 @@
 import web3 from './web3';
 
 
-//C'est une copie du contrat deployé dans le porjet lottery (pas react) avec: $ node deploy.js
+//C'est une copie du contrat deployé dans le projet lottery (pas react) avec: $ node deploy.js
 
 const address = '0x76d0bCaee5Ae32E4e0217070B6f1226f9a20d058';
 
